@@ -11,6 +11,15 @@ I did not bother to make it mobile-ready, since I only ever use it on desktop.
 
 It SHOULD work under any webserver that has php and mysql enabled, apache or nginx or a similar server.
 
+# Architecture
+
+There is precious little "architecture". 
+
+* Publically accessible files reside in htdocs/.
+* The root document is htdocs/index.php.
+* CSS and JS reside in htdocs/css and htdocs/js, respectively.
+* The code library is in php/, along with the templating and the config file.
+* db migrations are under migrations/.
 
 # Setup
 
@@ -21,6 +30,8 @@ To set it up:
 3. Edit php/config.php to set the db config.
 4. Set up the db.
 5. Inside the project root, run mysql client on the db, and inside mysql, run: "source migrations/setup.sql"
+
+Point your browser to htdocs/index.php.
 
 Please do not be alarmed about the lack of any git history. I used my real name on the local repo, and I don't want to expose that to the world.
 
