@@ -1,0 +1,6 @@
+ALTER TABLE habit ADD seq INT UNSIGNED NOT NULL DEFAULT 0;
+UPDATE habit SET seq = id;
+ALTER TABLE habit ADD UNIQUE INDEX(seq);
+ALTER TABLE resolution ADD seq INT UNSIGNED NOT NULL DEFAULT 0;
+UPDATE resolution SET seq = id;
+ALTER TABLE resolution ADD UNIQUE INDEX(habit_id, seq);

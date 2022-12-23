@@ -1,0 +1,179 @@
+<div id="loading-overlay">
+    <div class="text">
+        <i class="fa fa-hourglass-1" aria-hidden="true"></i>
+        Loading...
+    </div>
+</div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" src="js/stats.js"></script>
+<script type="text/javascript">const habits = <?=json_encode(array_map(function($h) { return $h->toJson(true, $this->data['startDate'], $this->data['endDate']); }, $this->data['habits']))?></script>
+<script type="text/javascript">const habitIds = <?=json_encode(array_map(function($h) { return $h->getId(); }, $this->data['habits']))?></script>
+<script type="text/javascript">openedHabits = '<?=$this->data['openedHabits']?>';</script>
+<form method="get" id="date-form">
+    <input type="hidden" id="date_start_span" name="date_start_span" value="<?=$this->data['dateStartSpan']?>" />
+    <button onClick="filterDatesBySpan('one_month')"<?php if ( $this->data['dateStartSpan'] === 'one_month' ):?> class="active"<?php endif;?>>1 Monat</button>
+    <button onClick="filterDatesBySpan('three_months')"<?php if ( $this->data['dateStartSpan'] === 'three_months' ):?> class="active"<?php endif;?>>3 Monate</button>
+    <button onClick="filterDatesBySpan('six_months')"<?php if ( $this->data['dateStartSpan'] === 'six_months' ):?> class="active"<?php endif;?>>6 Monate</button>
+    <button onClick="filterDatesBySpan('one_year')"<?php if ( $this->data['dateStartSpan'] === 'one_year' ):?> class="active"<?php endif;?>>1 Jahr</button>
+    <button onClick="filterDatesBySpan('all_times')"<?php if ( $this->data['dateStartSpan'] === 'all_times' ):?> class="active"<?php endif;?>>Alle Zeiten</button>
+    <button onClick="useSpecificDates();return false;"<?php if ( $this->data['dateStartSpan'] === 'specific_date' ):?> class="active"<?php endif;?>>Manuelle Eingabe</button>
+    <span id="specific_dates">
+        Start Date: <input type="text" class="date" id="start-date" name="start_date" value="<?=Util::formatDate($this->data['startDate'])?>" />
+        End Date: <input type="text" class="date" id="end-date" name="end_date" value="<?=Util::formatDate($this->data['endDate'])?>" />
+        <input type="submit" name="filter" value="Filtern" />
+    </span>
+</form>
+
+<?php if ( $this->data['startDate'] ?? null ):?>
+    <h3>
+        <?=Util::formatDate($this->data['startDate'])?> - 
+        <?=Util::formatDate($this->data['endDate'])?>
+    </h3>
+<?php endif;?>
+
+<h1>
+    <span class="toggle-allhabits closed" id="toggle-habit-all-opener"><i class="fa fa-plus-square-o" aria-hidden="true"></i> </span>
+    <span class="toggle-allhabits open" id="toggle-habit-all-closer"><i class="fa fa-minus-square-o" aria-hidden="true"></i> </span>
+    All Habits
+</h1>
+<?php foreach ($this->data['habits'] as $habit):?>
+    <h2>
+        <span class="toggle-habit closed" id="toggle-habit-<?=$habit->getId()?>-opener" data-habitid="<?=$habit->getId()?>"><i class="fa fa-plus-square-o" aria-hidden="true"></i> </span>
+        <span class="toggle-habit open" id="toggle-habit-<?=$habit->getId()?>-closer" data-habitid="<?=$habit->getId()?>"><i class="fa fa-minus-square-o" aria-hidden="true"></i> </span>
+        <?=$habit->getName()?>
+    </h2>
+    <h2>
+        <span class="previous-habit" data-habitid="<?=$habit->getId()?>">
+            <i class="fa fa-arrow-circle-o-up" aria-hidden="true"></i>
+        </span>
+        <span class="next-habit" data-habitid="<?=$habit->getId()?>">
+            <i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
+        </span>
+    </h2>
+    <div class="stats openable" id="content-habit-<?=$habit->getId()?>">
+        <h4>Average Success: <?=round($habit->getAverageSuccess($this->data['startDate'], $this->data['endDate']), 0)?> %</h4>
+        <div>
+            <h4>Weak Streaks:</h4>
+            <table>
+                <?php if ( $this->data['endDate'] === null || $this->data['endDate']->format('Y-m-d') === (new \DateTime())->format('Y-m-d') ):?>
+                    <tr>
+                        <th>Current:</th>
+                        <?php $streak = $habit->getCurrentStreak('weak'); ?>
+                        <?php if ($streak):?>
+                            <td><?=$streak['days'] . ' days'?></td>
+                            <td>from <?=$streak['startDate']->format('Y-m-d')?></td>
+                            <td>to <?=$streak['endDate']->format('Y-m-d')?></td>
+                        <?php else:?>
+                            <td colspan="3">none</td>
+                        <?php endif;?>
+                    </tr>
+                <?php endif;?>
+                <tr>
+                    <th>Latest:</th>
+                    <?php $streak = $habit->getLatestStreak('weak', $this->data['endDate']); ?>
+                    <?php if ($streak):?>
+                        <td><?=$streak['days'] . ' days'?></td>
+                        <td>from <?=$streak['startDate']->format('Y-m-d')?></td>
+                        <td>to <?=$streak['endDate']->format('Y-m-d')?></td>
+                    <?php else:?>
+                        <td colspan="3">none</td>
+                    <?php endif;?>
+                </tr>
+                <tr>
+                    <th>Longest:</th>
+                    <?php $streak = $habit->getLongestStreak('weak', $this->data['startDate'], $this->data['endDate']); ?>
+                    <?php if ($streak):?>
+                        <td><?=$streak['days'] . ' days'?></td>
+                        <td>from <?=$streak['startDate']->format('Y-m-d')?></td>
+                        <td>to <?=$streak['endDate']->format('Y-m-d')?></td>
+                    <?php else:?>
+                        <td colspan="3">none</td>
+                    <?php endif;?>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <h4>Strong Streaks:</h4>
+            <table>
+                <?php if ( $this->data['endDate'] === null || $this->data['endDate']->format('Y-m-d') === (new \DateTime())->format('Y-m-d') ):?>
+                    <tr>
+                        <th>Current:</th>
+                        <?php $streak = $habit->getCurrentStreak('strong'); ?>
+                        <?php if ($streak):?>
+                            <td><?=$streak['days'] . ' days'?></td>
+                            <td>from <?=$streak['startDate']->format('Y-m-d')?></td>
+                            <td>to <?=$streak['endDate']->format('Y-m-d')?></td>
+                        <?php else:?>
+                            <td colspan="3">none</td>
+                        <?php endif;?>
+                    </tr>
+                <?php endif;?>
+                <tr>
+                    <th>Latest:</th>
+                    <?php $streak = $habit->getLatestStreak('strong', $this->data['endDate']); ?>
+                    <?php if ($streak):?>
+                        <td><?=$streak['days'] . ' days'?></td>
+                        <td>from <?=$streak['startDate']->format('Y-m-d')?></td>
+                        <td>to <?=$streak['endDate']->format('Y-m-d')?></td>
+                    <?php else:?>
+                        <td colspan="3">none</td>
+                    <?php endif;?>
+                </tr>
+                <tr>
+                    <th>Longest:</th>
+                    <?php $streak = $habit->getLongestStreak('strong', $this->data['startDate'], $this->data['endDate']); ?>
+                    <?php if ($streak):?>
+                        <td><?=$streak['days'] . ' days'?></td>
+                        <td>from <?=$streak['startDate']->format('Y-m-d')?></td>
+                        <td>to <?=$streak['endDate']->format('Y-m-d')?></td>
+                    <?php else:?>
+                        <td colspan="3">none</td>
+                    <?php endif;?>
+                </tr>
+            </table>
+        </div>
+        <div class="habit-stats wide" id="habit-<?=$habit->getId()?>-successPerDay"></div>
+        <div class="habit-stats wide" id="habit-<?=$habit->getId()?>-resolutionsPerWeek"></div>
+        <div class="habit-stats wide" id="habit-<?=$habit->getId()?>-tendencyPerDay"></div>
+        <div class="habit-stats" id="habit-<?=$habit->getId()?>-resolutions"></div>
+        <div class="habit-stats" id="habit-<?=$habit->getId()?>-successPercent"></div>
+        <div class="habit-stats" id="habit-<?=$habit->getId()?>-successPerWeekDay"></div>
+        <div class="clearfloat"></div>
+        <div class="habit-stats" id="habit-<?=$habit->getId()?>-streaks-weak"></div>
+        <div class="habit-stats" id="habit-<?=$habit->getId()?>-streaks-strong"></div>
+        <div class="clearfloat"></div>
+        <div class="habit-stats" id="habit-<?=$habit->getId()?>-streaks-in-time-weak"></div>
+        <div class="habit-stats" id="habit-<?=$habit->getId()?>-streaks-in-time-strong"></div>
+    </div>
+    <h2>
+        <span class="previous-habit" data-habitid="<?=$habit->getId()?>">
+            <i class="fa fa-arrow-circle-o-up" aria-hidden="true"></i>
+        </span>
+        <span class="next-habit" data-habitid="<?=$habit->getId()?>">
+            <i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
+        </span>
+    </h2>
+    <hr class="clearfloat"/>
+<?php endforeach;?>
+    <h2>
+        <span class="toggle-habit closed" id="toggle-habit-all-opener" data-habitid="all"><i class="fa fa-plus-square-o" aria-hidden="true"></i> </span>
+        <span class="toggle-habit open" id="toggle-habit-all-closer" data-habitid="all"><i class="fa fa-minus-square-o" aria-hidden="true"></i> </span>
+        Summary
+    </h2>
+    <div class="stats" id="content-habit-all">
+        <div class="wide" id="allhabits-successPerDay"></div>
+        <div class="wide high" id="allhabits-resolutionsPerDay"></div>
+        <div class="wide high" id="allhabits-tendencyPerDay"></div>
+        <div class="wide high" id="allhabits-successPerHabitsPerDay"></div>
+        <div id="allhabits-successPercent"></div>
+        <div id="allhabits-successPerWeekDay"></div>
+        <div class="clearfloat"></div>
+        <div class="wide high" id="allhabits-streaks-weak"></div>
+        <div class="wide high" id="allhabits-streaks-strong"></div>
+        <div class="wide high" id="allhabits-comparison"></div>
+    </div>
+    <hr class="clearfloat"/>
+</div>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+

@@ -1,0 +1,21 @@
+<?php foreach ($this->data as $habit): ?>
+    <div class="habit">
+        <h1><?php echo $habit->getName()?></h1>
+        <?php 
+            $yesterday = new \DateTime();
+            $yesterday->sub(new DateInterval('P1D'));
+            $now = new \DateTime();
+        ?>
+        <?php $resolutionDates = [ $habit->getResolutionDateForDate($yesterday),
+                                    $habit->getResolutionDateForDate($now)];
+        foreach ($resolutionDates as $resolutionDate):
+            if ($habit->getStartDate() && $resolutionDate->getDate() < $habit->getStartDate()):?>
+                <div class="resolution"><div class="comment"></div></div>
+            <?php else:?>
+                <?php $this->includeTemplate('resolution_date', ['resolutionDate' => $resolutionDate, 'habit' => $habit]); ?>
+            <?php endif;?>
+        <?php endforeach;?>
+    </div>
+    <hr/>
+<?php endforeach; ?>
+<script type="text/javascript" src="js/habit_calendar.js"></script>

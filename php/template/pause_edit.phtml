@@ -1,0 +1,28 @@
+<?php $habit = $this->data['habit'];?>
+Habit: <?=$habit->getName()?>
+<?php $pause = $this->data['pause'];?>
+<div id="habit-container" class="main-container list-container">
+    <form method="post">
+        <input type="hidden" name="action" value="edit"/>
+        <input type="hidden" name="habit_id" value="<?= static::h($habit->getId())?>"/>
+        <table class="config">
+            <?php if ($pause->getId()):?>
+                <tr>
+                    <th>ID:</th><td><input type="hidden" name="id" value="<?= static::h($pause->getId())?>"/><?= static::h($pause->getId())?></td>
+                </tr>
+            <?php endif;?>
+            <tr>
+                <th>Start Date:</th><td><input type="text" class="date" name="start_date" size="10" maxlength="10" value="<?= static::h($pause->getStartDateFormatted())?>"/></td>
+            </tr>
+            <tr>
+                <th>End Date:</th><td><input type="text" class="date" name="end_date" size="10" maxlength="10" value="<?= static::h($pause->getEndDateFormatted())?>"/></td>
+            </tr>
+            <tr>
+                <th>Description:</th><td><input type="text" name="description" size="30" maxlength="255" value="<?= static::h($pause->getDescription())?>"/></td>
+            </tr>
+            <tr>
+                <th></th><td><input type="submit" name="save" value="Save" /></td>
+            </tr>
+        <table>
+    </form>
+</div>

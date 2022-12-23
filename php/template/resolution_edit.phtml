@@ -1,0 +1,33 @@
+<?php $habit = $this->data['habit'];?>
+<?php $resolution = $this->data['resolution'];?>
+<div id="habit-container" class="main-container list-container">
+    <form method="post">
+        <input type="hidden" name="action" value="edit"/>
+        <input type="hidden" name="habit_id" value="<?= static::h($habit->getId())?>"/>
+        <table class="config">
+            <?php if ($resolution->getId()):?>
+                <tr>
+                    <th>ID:</th><td><input type="hidden" name="id" value="<?= static::h($resolution->getId())?>"/><?= static::h($resolution->getId())?></td>
+                </tr>
+            <?php endif;?>
+            <tr>
+                <th>Abbreviation:</th><td><input type="text" name="abbreviation" size="10" maxlength="10" value="<?= static::h($resolution->getAbbreviation())?>"/></td>
+            </tr>
+            <tr>
+                <th>Name:</th><td><input type="text" name="name" size="30" maxlength="255" value="<?= static::h($resolution->getName())?>"/></td>
+            </tr>
+            <tr>
+                <th>Description:</th><td><input type="text" name="description" size="30" maxlength="255" value="<?= static::h($resolution->getDescription())?>"/></td>
+            </tr>
+            <tr>
+                <th>Fulfilment (0 to max in habit):</th><td><input type="text" name="fulfilment" size="3" maxlength="3" value="<?= static::h($resolution->getFulfilment())?>"/></td>
+            </tr>
+            <tr>
+                <th></th><td><input type="submit" name="save" value="Save" /></td>
+            </tr>
+        <table>
+        <?php if ($resolution->getId()):?>
+            <a href="resolutions.php?action=list&habit_id=<?=$habit->getId()?>">Edit Resolutions for this habit</a></td>
+        <?php endif;?>
+    </form>
+</div>

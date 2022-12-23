@@ -1,0 +1,26 @@
+<?php 
+$resolutionDate = $this->data['resolutionDate'];
+$habit = $this->data['habit'];
+if ($resolutionDate->getResolution()):?>
+    <div class="resolution existing-resolution" id="resolution-date-<?php echo $resolutionDate->getId()?>" data-id="<?php echo $resolutionDate->getId()?>" 
+        title="<?=$resolutionDate->getDate()->format('d.m.Y')?> - <?=$resolutionDate->getResolution()->getName() . ' (' . $resolutionDate->getResolution()->getDescription() . ')'?>">
+        <?php echo $resolutionDate->getResolution()->getAbbreviation();?>
+        <div class="dom"><?=$resolutionDate->getDate()->format('d')?></div>
+        <div class="comment show" id="comment-<?php echo $resolutionDate->getId()?>">
+            <span data-id="<?php echo $resolutionDate->getId()?>" title="<?php echo $resolutionDate->getComment() ? static::h($resolutionDate->getComment()) : ''?>"><?php echo $resolutionDate->getComment() ? static::h($resolutionDate->getComment()) : '&#183;&#183;&#183;'?></span>
+            <input type="text" value="<?php echo static::h($resolutionDate->getComment())?>" size="30" maxlength="1024" id="comment-<?php echo $resolutionDate->getId()?>" data-id="<?php echo $resolutionDate->getId()?>" />
+        </div>
+    </div>
+<?php else:?>
+    <div class="resolution new-resolution" 
+        title="<?=$resolutionDate->getDate()->format('d.m.Y')?>"
+        data-habit-id="<?php echo $habit->getId()?>"
+        data-year="<?php echo $resolutionDate->getDate()->format('Y')?>"
+        data-month="<?php echo $resolutionDate->getDate()->format('m')?>"
+        data-dom="<?php echo $resolutionDate->getDate()->format('d')?>">
+        &#8226;
+        <div class="dom"><?=$resolutionDate->getDate()->format('d')?></div>
+        <div class="comment">&nbsp;</div>
+    </div>
+<?php endif;?>
+

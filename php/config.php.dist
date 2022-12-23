@@ -1,0 +1,30 @@
+<?php
+defined('DS') || define('DS', DIRECTORY_SEPARATOR);
+
+define ('ENVIRONMENT', 'dev');
+
+$fsRoot = dirname(__FILE__) . DS . '..';
+
+$CONFIG = json_decode(json_encode([
+    'web' => array(
+        'root' => '/',
+    ),
+    'fs' => array(
+        'baseDir' => $fsRoot . DS. 'htdocs',
+        'classPath'  => $fsRoot . DS . 'php' . DS . 'lib',
+        'includePath' => array(
+            '/usr/share/pear',
+        ),
+    ),
+    'db' => array(
+        'type'     => 'pdo',
+        'backend'  => 'mysql',
+        'server'   => 'localhost',
+        'user'     => '<...>',
+        'pass'     => '<...>',
+        'name'     => '<...>',
+    ),
+    'template' => array(
+        'rootPath'  => $fsRoot . DS . 'php' . DS . 'template',
+    ),
+]));

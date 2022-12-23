@@ -1,0 +1,33 @@
+<script type="text/javascript">const habitIds = <?=json_encode(array_map(function($h) { return $h->getId(); }, $this->data))?></script>
+<?php 
+foreach ($this->data as $habit):
+    $now = new \DateTime();?>
+    <div class="habit">
+        <h1 class="month-heading" data-month-combi="<?=$habit->getId()?>"><?php echo $habit->getName()?></h1>
+        <table class="month-table current" data-month-combi="<?=$habit->getId()?>">
+            <tr>
+                <th>&nbsp;</th>
+                <th>Mo</th>
+                <th>Di</th>
+                <th>Mi</th>
+                <th>Do</th>
+                <th>Fr</th>
+                <th>Sa</th>
+                <th>So</th>
+        <?php 
+            $weekStart = new \DateTime($now->format('Y-m-d'));
+            $weekStart->sub(new \DateInterval('P' . ((7 + ((int)$now->format('w') - 1)) % 7) . 'D'));
+            $weekEnd = new DateTime($weekStart->format('Y-m-d'));
+            $weekEnd->add(new \DateInterval('P6D'));
+
+            if ( (int)$now->format('w') === 1 ) { // monday, we often want the day before too!
+                $weekStart->sub(new \DateInterval('P1D'));
+            }
+        ?>
+        <?php $resolutionDates = $habit->getResolutionDatesBetweenDates($weekStart, $weekEnd);
+        echo $this->includeTemplate('habit_calendar_range', ['resolutionDates' => $resolutionDates, 'habit' => $habit]);?>
+        </table>
+    </div>
+    <hr/>
+<?php endforeach; ?>
+<script type="text/javascript" src="js/habit_calendar.js"></script>

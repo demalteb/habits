@@ -1,0 +1,57 @@
+<?php global $user;?>
+<?php 
+$db = connectDb(config()->db);
+?>
+<?php if (!preg_match('/login\.php/', $_SERVER['SCRIPT_NAME'])):?>
+<script>
+window.setTimeout(function() {
+    window.location.reload();
+}, 1000 * 60 * 10);
+</script>
+<?php endif;?>
+<script>let openedHabits = undefined;</script>
+<html>
+    <head>
+    <title><?=$this->data['pageTitle']?> - Habits</title>
+        <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet"> 
+        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+        <link rel="stylesheet" href="js/jquery-ui-1.12.1/jquery-ui.min.css" />
+        <link rel="stylesheet" href="css/site.css?x=<?=rand()?>" />
+        <link rel="stylesheet" href="css/media.css?x=<?=rand()?>" />
+        <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css" />
+    </head>
+    <body>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <div class="page">
+            <div class="menu-container" id="menu-container">
+                <ul>
+                    <?php if (isset($_SESSION['user_id'])):?>
+                        <li class="<?=preg_match('/habits\.php/', $_SERVER['SCRIPT_NAME']) || preg_match('/users\.php/', $_SERVER['SCRIPT_NAME']) || preg_match('/resolutions\.php/', $_SERVER['SCRIPT_NAME']) ? ' active' : ''?>"><a href="habits.php">Config</a></li>
+                        <li class="<?=preg_match('/index\.php/', $_SERVER['SCRIPT_NAME']) ? ' active' : ''?>"><a href="index.php">Calendar</a></li>
+                        <li class="<?=preg_match('/this_week\.php/', $_SERVER['SCRIPT_NAME']) ? ' active' : ''?>"><a href="this_week.php">This Week</a></li>
+                        <li class="<?=preg_match('/stats\.php/', $_SERVER['SCRIPT_NAME']) ? ' active' : ''?>"><a href="stats.php">Stats</a></li>
+                        <li><a href="logout.php">Logout</a></li>
+                    <?php else:?>
+                        <li class="<?=preg_match('/login\.php/', $_SERVER['SCRIPT_NAME']) ? ' active' : ''?>"><a href="login.php">Login</a></li>
+                    <?php endif;?>
+                    <?php if ($user):?><li class="username"><?=$user->getName()?></li><?php endif;?>
+                    <?=ENVIRONMENT !== 'prod' ? ENVIRONMENT: ''?>
+                </ul>
+            </div>
+            <?php if (isset($this->data['errors'])):?>
+                <div id="errors">
+                    <?php foreach($this->data['errors'] as $error):?>
+                        <div class="error"><?=$error?></div>
+                    <?php endforeach;?>
+                </div>
+            <?php endif;?>
+            <div id="main-container" class="main-container">
+                <?php $this->includeTemplate($this->data['template'], $this->data['templateData'] ?? null); ?>
+            </div>
+        <!--script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script-->
+
+        <script type="text/javascript" src="js/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="js/site.js"></script>
+    </body>
+</html>
+

@@ -1,0 +1,18 @@
+<table class="config">
+    <?php foreach ($this->data as $habit):?>
+        <tr>
+            <td><?= $habit->getName()?></td>
+            <td><?= $habit->getDescription()?></td>
+            <td><?= $habit->getStartDate() ? $habit->getStartDate()->format('Y-m-d') : null?></td>
+            <td><?= $habit->getEndDate() ? $habit->getEndDate()->format('Y-m-d') : null?></td>
+            <td><a href="habits.php?action=edit&id=<?=$habit->getId()?>">Edit</a></td>
+            <td><a href="resolutions.php?action=list&habit_id=<?=$habit->getId()?>">Resolutions</a></td>
+            <td><a href="habits.php?action=change_seqs&direction=up&id=<?=$habit->getId()?>">UP</a></td>
+            <td><a href="habits.php?action=change_seqs&direction=down&id=<?=$habit->getId()?>">DOWN</a></td>
+            <td><a href="javascript:confirmDelete('habits.php?action=delete&id=<?=$habit->getId()?>')">Delete</a></td>
+        </tr>
+    <?php endforeach;?>
+<table>
+<a href="habits.php?action=create">Create New Habit</a>
+<br/>
+<a href="users.php">Users</a>

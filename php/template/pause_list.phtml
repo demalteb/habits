@@ -1,0 +1,14 @@
+<?php $habit = $this->data['habit']; ?>
+Habit: <?=$habit->getName()?>
+<table class="config">
+    <?php foreach ($this->data['pauses'] as $pause):?>
+        <tr>
+            <td><?= $pause->getStartDateFormatted()?></td>
+            <td><?= $pause->getEndDateFormatted()?></td>
+            <td><?= $pause->getDescription()?></td>
+            <td><a href="pauses.php?action=edit&id=<?=$pause->getId()?>">Edit</a></td>
+            <td><a href="javascript:confirmDelete('pauses.php?action=delete&id=<?=$pause->getId()?>')">Delete</a></td>
+        </tr>
+    <?php endforeach;?>
+<table>
+<a href="pauses.php?habit_id=<?=$habit->getId()?>&action=edit">New pause</a>

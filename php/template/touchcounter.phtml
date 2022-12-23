@@ -1,0 +1,21 @@
+<h2>Sum:</h2>
+<b><?=count($this->data['touches'])?></b>
+<h2>Daily Sums:</h2>
+<table class="touches">
+    <?php foreach ($this->data['touchesPerDay'] as $touch):?>
+        <tr>
+            <td><?= $touch['created_date']?></td>
+            <td><?= $touch['count']?></td>
+        </tr>
+    <?php endforeach;?>
+<table>
+<hr/>
+<h2>Single Instances:</h2>
+<table class="touches">
+    <?php foreach ($this->data['touches'] as $touch):?>
+        <tr>
+            <td><?= $touch['created_time']?></td>
+        </tr>
+    <?php endforeach;?>
+<table>
+<a href="touchcounter.php?action=add">Add</a>

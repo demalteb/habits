@@ -1,0 +1,1 @@
+ALTER TABLE resolution CHANGE fulfilment_percent fulfilment DECIMAL(8,2) NOT NULL DEFAULT 100;

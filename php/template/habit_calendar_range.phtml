@@ -1,0 +1,27 @@
+<?php $resolutionDates = $this->data['resolutionDates']; $habit = $this->data['habit'];
+    $resolutionDate = $resolutionDates[0]; 
+    if ($resolutionDate->getDate()->format('N') != 1):?>
+    <tr>
+        <th class="week-number"><?=$resolutionDate->getDate()->format('W')?></th>
+        <?php for ($i = 1; $i < $resolutionDate->getDate()->format('N'); ++$i):?>
+            <td>
+                
+            </td>
+        <?php endfor;?>
+<?php endif;?>
+<?php foreach ($resolutionDates as $resolutionDate):?>
+    <?php if ($resolutionDate->getDate()->format('N') == 1):?>
+        <tr>
+        <th class="week-number"><?php echo $resolutionDate->getDate()->format('W');?></th>
+    <?php endif;?>
+    <td>
+        <?php if ($habit->getStartDate() && $resolutionDate->getDate() < $habit->getStartDate()):?>
+            <div class="resolution"><div class="dom"><?=$resolutionDate->getDate()->format('d')?><div class="comment"></div></div>
+        <?php else:?>
+            <?php $this->includeTemplate('resolution_date', ['resolutionDate' => $resolutionDate, 'habit' => $habit]); ?>
+        <?php endif;?>
+    </td>
+    <?php if ($resolutionDate->getDate()->format('N') % 7 === 0):?>
+        </tr>
+    <?php endif?>
+<?php endforeach;?>

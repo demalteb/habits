@@ -1,0 +1,232 @@
+body {
+    /* bg: #727251 */
+    /* fg: #444 */
+    color: #08c;
+    font-size: 1.2em;
+}
+
+body a {
+    color: #08c;
+}
+
+.month-table {
+    display: none;
+}
+
+.month-table.current {
+    display: table;
+}
+
+.main-container {
+    width: 100%;
+}
+
+.resolution {
+    padding: 10px;
+    border-width: 5px;
+    border-style: outset;
+    border-color: #08c;
+    min-width: 100px;
+    max-width: 200px;
+    font-size: 1.3em;
+    text-align: center;
+    min-height: 40px;
+    max-height: 40px;
+    overflow: hidden;
+    position: relative;
+}
+
+.new-resolution, .existing-resolution {
+    cursor: pointer;
+}
+
+.resolution:hover {
+    border-style: solid;
+    background-color: #cfe;
+}
+
+.resolution:active {
+    border-style: inset;
+}
+
+.resolution .dom {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 0.7em;
+    color: #9c9;
+}
+
+.week-number {
+    font-size: 0.9em;
+    color: #9c9;
+    font-weight: normal;
+}
+
+.resolution .comment {
+    font-size: 0.6em;
+    text-align: right;
+}
+
+.resolution .comment:hover {
+    background-color: #9fe;
+}
+
+.resolution .comment input {
+    display: none;
+}
+
+.habit {
+    border: 1px dashed #08c;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+hr {
+    color: #036;
+    background-color: #036;
+    height: 5px;
+    border: 1px dashed #08c;
+}
+
+.menu-container ul {
+    position: relative;
+    color: #9fe;
+    background-color: #cc9;
+    padding: 5px;
+}
+
+.menu-container ul li {
+    display: inline;
+    background-color: #cca;
+    list-style-type: none;
+    margin: 10px;
+    border: 2px outset #08c;
+}
+
+.menu-container ul li.active {
+    background-color: #eec;
+}
+
+.menu-container ul li a {
+    text-decoration: none;
+}
+.menu-container .username {
+    background-color: transparent;
+    border: 0;
+    color: #360;
+    /*
+    position: absolute;
+    right: 5px;
+    bottom: 0px;
+    */
+}
+
+th {
+    text-align: left;
+}
+
+table.config {
+    border-collapse: collapse
+}
+table.config tbody th, table.config tbody td {
+    border-bottom: 1px solid #fc0;
+    padding: 5px;
+}
+table.config a {
+    text-decoration: none;
+    border: 2px outset #08c;
+    padding: 3px;
+}
+table.config a:hover {
+    border-style: inset;
+}
+
+.toggle-habit, .toggle-allhabits, .next-habit, .previoius-habit, .month-heading {
+    cursor: pointer;
+}
+
+.stats {
+    border: 2px outset #eed;
+    border-radius: 2px;
+    background-color: #ffe;
+    margin: 5px;
+    min-height: 45px;
+    padding: 5px;
+    display: inline-block;
+}
+
+.stats > div {
+    width: 50%;
+    min-width: 30%;
+    max-width: 60%;
+    float: left;
+}
+
+.stats > div.wide {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+}
+
+.stats > div.high {
+    min-height: 300px;
+    height: 500px;
+    max-height: 800px;
+}
+
+.clearfloat {
+    float: none;
+    clear: both;
+}
+
+.error {
+    color: #c00;
+}
+
+#loading-overlay {
+    background-color: #000;
+    position: fixed; /* Sit on top of the page content */
+    display: none; /* Hidden by default */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.2); /* Black background with opacity */
+    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+}
+
+#loading-overlay .text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 50px;
+  color: white;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+}
+
+button {
+    color: #08c;
+    border-color: #08c;
+    background-color: #cc9;
+}
+button.active {
+    background-color: #eec;
+}
+
+table.touches td {
+    border: 1px solid;
+}
+
+.habit-stats {
+    min-height: 400px;
+    max-height: 400px;
+    height: 400px;
+}
+
+table.login tr td, table.login tr th {
+    padding: 10px;
+}

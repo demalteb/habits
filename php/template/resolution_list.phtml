@@ -1,0 +1,15 @@
+<table class="config">
+    <?php $habit = $this->data['habit']; foreach ($this->data['resolutions'] as $resolution):?>
+        <tr>
+            <td><?= $resolution->getAbbreviation()?></td>
+            <td><?= $resolution->getName()?></td>
+            <td><?= $resolution->getDescription()?></td>
+            <td><?= $resolution->getFulfilment()?></td>
+            <td><a href="resolutions.php?action=edit&id=<?=$resolution->getId()?>">Edit</a></td>
+            <td><a href="resolutions.php?action=change_seqs&direction=up&id=<?=$resolution->getId()?>&habit_id=<?=$habit->getId()?>">UP</a></td>
+            <td><a href="resolutions.php?action=change_seqs&direction=down&id=<?=$resolution->getId()?>&habit_id=<?=$habit->getId()?>">DOWN</a></td>
+            <td><a href="javascript:confirmDelete('resolutions.php?action=delete&id=<?=$resolution->getId()?>')">Delete</a></td>
+        </tr>
+    <?php endforeach;?>
+<table>
+<a href="resolutions.php?habit_id=<?=$habit->getId()?>&action=edit">New Resolution</a>
